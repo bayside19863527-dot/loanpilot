@@ -84,8 +84,6 @@ function calculate(){
 ids.forEach(id=>document.getElementById(id).addEventListener('input',calculate));
 document.getElementById('language').addEventListener('change',e=>setLanguage(e.target.value));
 document.getElementById('reset').addEventListener('click',()=>{ids.forEach(id=>document.getElementById(id).value=defaults[id]);calculate()});
-setLanguage("en");
-
 // Separate four-function calculator; never evaluates user input as code.
 const calc={display:'0',stored:null,operator:null,waiting:false,history:'',errorKey:null};
 const calcDisplay=document.getElementById('calc-display');
@@ -133,7 +131,7 @@ document.addEventListener('keydown',e=>{
  else if(key==='%')action='percent';
  if(action){e.preventDefault();calcAction(action,value);}
 });
-showCalc();
+setLanguage("en");
 
 </script>
 </body>
