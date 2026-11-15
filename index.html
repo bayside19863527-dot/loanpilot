@@ -3,45 +3,65 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>LoanPilot | Mortgage Calculator</title>
+<title>LoanPilot | Residential Mortgage Calculator</title>
 <style>
-:root{font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;color:#15263e;background:#f3f6fb}*{box-sizing:border-box}body{margin:0}header{background:#102b4e;color:white;padding:24px max(20px,calc((100% - 1050px)/2))}header h1{margin:0;font-size:27px}header p{margin:6px 0 0;color:#cbd8e9}main{max-width:1050px;margin:30px auto;padding:0 18px}.layout{display:grid;grid-template-columns:1.1fr 1fr;gap:22px}.panel{background:white;border-radius:16px;padding:25px;box-shadow:0 5px 24px #142d4d12}h2{margin:0 0 20px;font-size:21px}.fields{display:grid;grid-template-columns:1fr 1fr;gap:17px}label{font-size:13px;font-weight:650;display:block;margin-bottom:7px}input,select{width:100%;padding:12px;border:1px solid #c9d4e2;border-radius:9px;font:inherit;background:white;color:#15263e}input:focus,select:focus{outline:2px solid #3978e0;outline-offset:1px}.hero{background:#eaf2ff;border-radius:12px;padding:20px;margin-bottom:20px}.hero small{color:#385c87}.hero strong{display:block;font-size:35px;margin-top:5px;color:#0d4b9d}.line{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid #e9eef5;padding:13px 0;font-size:14px}.line strong{text-align:right}.note{color:#66758a;font-size:12px;line-height:1.65;margin-top:20px}.error{color:#b42318;font-size:13px;min-height:20px;margin-top:12px}button{margin-top:15px;background:#1659b7;color:white;border:0;border-radius:9px;padding:12px 18px;font-weight:650;cursor:pointer}button:hover{background:#0e428c}footer{text-align:center;color:#6b7b90;font-size:12px;padding:30px}@media(max-width:750px){.layout{grid-template-columns:1fr}.fields{grid-template-columns:1fr 1fr}.panel{padding:18px}}@media(max-width:420px){.fields{grid-template-columns:1fr}.hero strong{font-size:29px}}
+:root{font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;color:#15263e;background:#f3f6fb}*{box-sizing:border-box}body{margin:0}header{background:#102b4e;color:white;padding:24px max(20px,calc((100% - 1050px)/2))}header .headrow{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}header select{width:auto;min-width:150px;background:#fff}header h1{margin:0;font-size:27px}header p{margin:6px 0 0;color:#cbd8e9}main{max-width:1050px;margin:30px auto;padding:0 18px}.layout{display:grid;grid-template-columns:1.1fr 1fr;gap:22px}.panel{background:white;border-radius:16px;padding:25px;box-shadow:0 5px 24px #142d4d12}h2{margin:0 0 20px;font-size:21px}.fields{display:grid;grid-template-columns:1fr 1fr;gap:17px}label{font-size:13px;font-weight:650;display:block;margin-bottom:7px}input,select{width:100%;padding:12px;border:1px solid #c9d4e2;border-radius:9px;font:inherit;background:white;color:#15263e}input:focus,select:focus{outline:2px solid #3978e0;outline-offset:1px}.hero{background:#eaf2ff;border-radius:12px;padding:20px;margin-bottom:20px}.hero small{color:#385c87}.hero strong{display:block;font-size:35px;margin-top:5px;color:#0d4b9d}.line{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid #e9eef5;padding:13px 0;font-size:14px}.line strong{text-align:right}.note{color:#66758a;font-size:12px;line-height:1.65;margin-top:20px}.error{color:#b42318;font-size:13px;min-height:20px;margin-top:12px}button{margin-top:15px;background:#1659b7;color:white;border:0;border-radius:9px;padding:12px 18px;font-weight:650;cursor:pointer}button:hover{background:#0e428c}footer{text-align:center;color:#6b7b90;font-size:12px;padding:30px}@media(max-width:750px){.layout{grid-template-columns:1fr}.fields{grid-template-columns:1fr 1fr}.panel{padding:18px}}@media(max-width:420px){.fields{grid-template-columns:1fr}.hero strong{font-size:29px}}
+
+/* Standalone everyday calculator, independent from mortgage fields */
+.utility-panel{margin-top:22px;max-width:520px}.calc-screen{background:#102b4e;color:#fff;border-radius:12px;padding:17px 18px;text-align:right;min-height:98px;overflow-wrap:anywhere}.calc-history{font-size:13px;color:#cbd8e9;min-height:19px}.calc-value{font-size:35px;font-weight:700;font-variant-numeric:tabular-nums;margin-top:5px}.calc-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:15px}.calc-grid button{margin:0;padding:15px 5px;font-size:19px;border-radius:10px;background:#eef3fb;color:#193653}.calc-grid button:hover{background:#dce8fa}.calc-grid .operator{background:#dceaff;color:#1555a7}.calc-grid .equals{background:#1659b7;color:white}.calc-grid .equals:hover{background:#0e428c}.calc-grid .clear{background:#fce9e7;color:#a42b20}.calc-grid button:focus-visible{outline:3px solid #3978e0;outline-offset:2px}.calc-hint{font-size:12px;color:#66758a;margin:12px 0 0;line-height:1.6}
 </style>
 </head>
 <body>
-<header><h1>LoanPilot</h1><p>Smart Mortgage Calculator · Free Estimate</p></header>
+<header><div class="headrow"><div><h1>LoanPilot</h1><p data-i18n="subtitle">Residential Mortgage Calculator · Free Estimate</p></div><div><label for="language" data-i18n="language">Language</label><select id="language" aria-label="Language"><option value="en">English</option><option value="zh-CN">简体中文</option><option value="zh-TW">繁體中文</option><option value="es">Español</option><option value="fr">Français</option><option value="ko">한국어</option></select></div></div></header>
 <main>
 <div class="layout">
 <section class="panel">
-<h2>Loan Details</h2>
+<h2 data-i18n="details">Residential Mortgage Details</h2>
 <div class="fields">
-<div><label for="price">Home price ($)</label><input id="price" type="number" min="0" step="1000" value="450000"></div>
-<div><label for="down">Down payment (%)</label><input id="down" type="number" min="0" max="100" step="0.5" value="20"></div>
-<div><label for="rate">Annual interest rate (%)</label><input id="rate" type="number" min="0" step="0.01" value="6.5"></div>
-<div><label for="years">Loan term</label><select id="years"><option value="30">30 years</option><option value="20">20 years</option><option value="15">15 years</option><option value="10">10 years</option></select></div>
-<div><label for="tax">Annual property tax ($)</label><input id="tax" type="number" min="0" value="5400"></div>
-<div><label for="insurance">Annual home insurance ($)</label><input id="insurance" type="number" min="0" value="1500"></div>
-<div><label for="hoa">Monthly HOA ($)</label><input id="hoa" type="number" min="0" value="0"></div>
-<div><label for="pmi">Monthly mortgage insurance ($)</label><input id="pmi" type="number" min="0" value="0"></div>
+<div><label for="price" data-i18n="price">Home price ($)</label><input id="price" type="number" min="0" step="1000" value="450000"></div>
+<div><label for="down" data-i18n="down">Down payment (%)</label><input id="down" type="number" min="0" max="100" step="0.5" value="20"></div>
+<div><label for="rate" data-i18n="rate">Annual interest rate (%)</label><input id="rate" type="number" min="0" step="0.01" value="6.5"></div>
+<div><label for="years" data-i18n="term">Loan term</label><select id="years"><option value="30">30 years</option><option value="20">20 years</option><option value="15">15 years</option><option value="10">10 years</option></select></div>
+<div><label for="tax" data-i18n="tax">Annual property tax ($)</label><input id="tax" type="number" min="0" value="5400"></div>
+<div><label for="insurance" data-i18n="insurance">Annual home insurance ($)</label><input id="insurance" type="number" min="0" value="1500"></div>
+<div><label for="hoa" data-i18n="hoa">Monthly HOA ($)</label><input id="hoa" type="number" min="0" value="0"></div>
+<div><label for="pmi" data-i18n="pmi">Monthly mortgage insurance ($)</label><input id="pmi" type="number" min="0" value="0"></div>
 </div>
 <div class="error" id="error" role="alert"></div>
-<button id="reset" type="button">Reset to example</button>
+<button id="reset" type="button" data-i18n="reset">Reset to example</button>
 </section>
 <section class="panel" aria-live="polite">
-<h2>Your Estimate</h2>
-<div class="hero"><small>Estimated total monthly housing payment</small><strong id="total">—</strong></div>
-<div class="line"><span>Down payment</span><strong id="downAmount">—</strong></div>
-<div class="line"><span>Loan amount</span><strong id="principal">—</strong></div>
-<div class="line"><span>Monthly principal &amp; interest</span><strong id="pi">—</strong></div>
-<div class="line"><span>Monthly tax &amp; insurance</span><strong id="taxins">—</strong></div>
-<div class="line"><span>Monthly HOA &amp; mortgage insurance</span><strong id="other">—</strong></div>
-<div class="line"><span>Total interest over loan term</span><strong id="interest">—</strong></div>
-<p class="note">For educational estimates only. Not a loan offer, approval, or financial advice. Actual payments may differ. Interest rate is a sample input, not a live quote. Mortgage insurance is not automatically estimated; enter it if applicable. Closing costs, utilities and maintenance are not included.</p>
+<h2 data-i18n="estimate">Residential Mortgage Estimate</h2>
+<div class="hero"><small data-i18n="total">Estimated Monthly Residential Housing Payment</small><strong id="total">—</strong></div>
+<div class="line"><span data-i18n="downAmount">Down payment</span><strong id="downAmount">—</strong></div>
+<div class="line"><span data-i18n="principal">Loan amount</span><strong id="principal">—</strong></div>
+<div class="line"><span data-i18n="pi">Monthly principal &amp; interest</span><strong id="pi">—</strong></div>
+<div class="line"><span data-i18n="taxins">Monthly tax &amp; insurance</span><strong id="taxins">—</strong></div>
+<div class="line"><span data-i18n="other">Monthly HOA &amp; mortgage insurance</span><strong id="other">—</strong></div>
+<div class="line"><span data-i18n="interest">Total interest over loan term</span><strong id="interest">—</strong></div>
+<p class="note" data-i18n="note">For educational estimates only. Not a loan offer, approval, or financial advice. Actual payments may differ. Interest rate is a sample input, not a live quote. Mortgage insurance is not automatically estimated; enter it if applicable. Closing costs, utilities and maintenance are not included.</p>
 </section>
 </div>
+
+<section class="panel utility-panel" aria-labelledby="utility-title">
+<h2 id="utility-title" data-i18n="calcTitle">Basic Calculator</h2>
+<div class="calc-screen" role="status" aria-live="polite" aria-atomic="true"><div id="calc-history" class="calc-history"></div><div id="calc-display" class="calc-value">0</div></div>
+<div class="calc-grid" id="calc-keys" aria-label="Calculator keypad">
+<button type="button" class="clear" data-action="clear">AC</button><button type="button" data-action="backspace" aria-label="Backspace">⌫</button><button type="button" data-action="sign">±</button><button type="button" class="operator" data-action="operator" data-value="/">÷</button>
+<button type="button" data-action="digit" data-value="7">7</button><button type="button" data-action="digit" data-value="8">8</button><button type="button" data-action="digit" data-value="9">9</button><button type="button" class="operator" data-action="operator" data-value="*">×</button>
+<button type="button" data-action="digit" data-value="4">4</button><button type="button" data-action="digit" data-value="5">5</button><button type="button" data-action="digit" data-value="6">6</button><button type="button" class="operator" data-action="operator" data-value="-">−</button>
+<button type="button" data-action="digit" data-value="1">1</button><button type="button" data-action="digit" data-value="2">2</button><button type="button" data-action="digit" data-value="3">3</button><button type="button" class="operator" data-action="operator" data-value="+">+</button>
+<button type="button" data-action="digit" data-value="0">0</button><button type="button" data-action="decimal">.</button><button type="button" data-action="percent">%</button><button type="button" class="equals" data-action="equals">=</button>
+</div>
+<p class="calc-hint" data-i18n="calcHint">Add, subtract, multiply or divide. Supports keyboard input. This calculator does not change mortgage estimates.</p>
+</section>
 </main>
-<footer>© 2026 LoanPilot · Simple, transparent mortgage estimates</footer>
+<footer data-i18n="footer">© 2026 LoanPilot · Simple, transparent mortgage estimates</footer>
 <script>
+
+const messages={"en": {"subtitle": "Residential Mortgage Calculator · Free Estimate", "language": "Language", "details": "Residential Mortgage Details", "price": "Home price ($)", "down": "Down payment (%)", "rate": "Annual interest rate (%)", "term": "Loan term", "tax": "Annual property tax ($)", "insurance": "Annual home insurance ($)", "hoa": "Monthly HOA ($)", "pmi": "Monthly mortgage insurance ($)", "reset": "Reset to example", "estimate": "Residential Mortgage Estimate", "total": "Estimated Monthly Residential Housing Payment", "downAmount": "Down payment", "principal": "Loan amount", "pi": "Monthly principal & interest", "taxins": "Monthly tax & insurance", "other": "Monthly HOA & mortgage insurance", "interest": "Total interest over loan term", "note": "For educational estimates only. Not a loan offer, approval, or financial advice. Actual payments may differ. Interest rate is a sample input, not a live quote. Mortgage insurance is not automatically estimated; enter it if applicable. Closing costs, utilities and maintenance are not included.", "footer": "© 2026 LoanPilot · Simple, transparent mortgage estimates", "invalid": "Enter valid non-negative numbers; down payment must be 0–100%.", "year": "years", "calcTitle": "Basic Calculator", "calcHint": "Add, subtract, multiply or divide. Supports keyboard input. This calculator does not change mortgage estimates.", "calcZero": "Cannot divide by zero", "calcError": "Error"}, "zh-CN": {"subtitle": "住宅房屋抵押贷款计算器 · 免费估算", "language": "语言", "details": "住宅房贷详情", "price": "房屋价格 ($)", "down": "首付比例 (%)", "rate": "年利率 (%)", "term": "贷款期限", "tax": "每年房产税 ($)", "insurance": "每年房屋保险 ($)", "hoa": "每月 HOA 费用 ($)", "pmi": "每月房贷保险 ($)", "reset": "恢复示例数据", "estimate": "住宅房贷估算", "total": "预估每月住宅房贷总支出", "downAmount": "首付金额", "principal": "贷款本金", "pi": "每月本金及利息", "taxins": "每月房产税及保险", "other": "每月 HOA 及房贷保险", "interest": "贷款期限内总利息", "note": "仅供教育及估算用途，不构成贷款报价、批准或财务建议。实际付款金额可能不同。利率为示例输入，不是实时报价。房贷保险需自行填写。未包含过户费、水电费和维护费。", "footer": "© 2026 LoanPilot · 简单透明的房贷估算", "invalid": "请输入有效的非负数；首付比例必须在 0–100% 之间。", "year": "年", "calcTitle": "普通计算器", "calcHint": "支持加、减、乘、除和键盘输入。此计算器不会改变住宅房贷估算结果。", "calcZero": "不能除以零", "calcError": "错误"}, "zh-TW": {"subtitle": "住宅房屋抵押貸款計算器 · 免費估算", "language": "語言", "details": "住宅房貸詳情", "price": "房屋價格 ($)", "down": "頭期款比例 (%)", "rate": "年利率 (%)", "term": "貸款期限", "tax": "每年房產稅 ($)", "insurance": "每年房屋保險 ($)", "hoa": "每月 HOA 費用 ($)", "pmi": "每月房貸保險 ($)", "reset": "恢復範例資料", "estimate": "住宅房貸估算", "total": "預估每月住宅房貸總支出", "downAmount": "頭期款金額", "principal": "貸款本金", "pi": "每月本金及利息", "taxins": "每月房產稅及保險", "other": "每月 HOA 及房貸保險", "interest": "貸款期限內總利息", "note": "僅供教育及估算用途，不構成貸款報價、核准或財務建議。實際付款可能不同。利率為範例輸入，非即時報價。房貸保險須自行填寫。未包含過戶費、水電費和維護費。", "footer": "© 2026 LoanPilot · 簡單透明的房貸估算", "invalid": "請輸入有效的非負數；頭期款比例須介於 0–100%。", "year": "年", "calcTitle": "一般計算機", "calcHint": "支援加、減、乘、除與鍵盤輸入。本計算機不會變更住宅房貸估算結果。", "calcZero": "不能除以零", "calcError": "錯誤"}, "es": {"subtitle": "Calculadora de hipotecas residenciales · Estimación gratuita", "language": "Idioma", "details": "Datos de la hipoteca residencial", "price": "Precio de la vivienda ($)", "down": "Pago inicial (%)", "rate": "Tasa de interés anual (%)", "term": "Plazo del préstamo", "tax": "Impuesto anual sobre la propiedad ($)", "insurance": "Seguro anual de vivienda ($)", "hoa": "Cuota mensual HOA ($)", "pmi": "Seguro hipotecario mensual ($)", "reset": "Restablecer ejemplo", "estimate": "Estimación hipotecaria residencial", "total": "Pago mensual total estimado de vivienda", "downAmount": "Pago inicial", "principal": "Importe del préstamo", "pi": "Capital e intereses mensuales", "taxins": "Impuestos y seguro mensuales", "other": "HOA y seguro hipotecario mensuales", "interest": "Intereses totales del préstamo", "note": "Solo para fines educativos y estimativos. No constituye una oferta ni aprobación de préstamo ni asesoramiento financiero. Los pagos reales pueden variar. La tasa es un ejemplo, no una cotización actual. Introduzca el seguro hipotecario si corresponde. No incluye costos de cierre, servicios ni mantenimiento.", "footer": "© 2026 LoanPilot · Estimaciones hipotecarias claras", "invalid": "Introduzca valores no negativos válidos; el pago inicial debe estar entre 0 y 100 %.", "year": "años", "calcTitle": "Calculadora básica", "calcHint": "Suma, resta, multiplica o divide. Admite el teclado. No modifica la estimación hipotecaria.", "calcZero": "No se puede dividir entre cero", "calcError": "Error"}, "fr": {"subtitle": "Calculateur de prêt immobilier résidentiel · Estimation gratuite", "language": "Langue", "details": "Détails du prêt immobilier résidentiel", "price": "Prix du logement ($)", "down": "Apport initial (%)", "rate": "Taux d’intérêt annuel (%)", "term": "Durée du prêt", "tax": "Taxe foncière annuelle ($)", "insurance": "Assurance habitation annuelle ($)", "hoa": "Charges HOA mensuelles ($)", "pmi": "Assurance hypothécaire mensuelle ($)", "reset": "Réinitialiser l’exemple", "estimate": "Estimation du prêt résidentiel", "total": "Mensualité totale estimée du logement", "downAmount": "Apport initial", "principal": "Montant emprunté", "pi": "Capital et intérêts mensuels", "taxins": "Taxes et assurance mensuelles", "other": "HOA et assurance hypothécaire mensuelles", "interest": "Total des intérêts sur la durée du prêt", "note": "À titre éducatif et indicatif uniquement. Ceci ne constitue ni une offre ni une approbation de prêt, ni un conseil financier. Les paiements réels peuvent varier. Le taux est un exemple, pas un devis en temps réel. Saisissez l’assurance hypothécaire si nécessaire. Frais de clôture, services publics et entretien exclus.", "footer": "© 2026 LoanPilot · Estimations hypothécaires transparentes", "invalid": "Saisissez des nombres positifs ou nuls valides ; l’apport doit être entre 0 et 100 %.", "year": "ans", "calcTitle": "Calculatrice simple", "calcHint": "Addition, soustraction, multiplication et division. Clavier pris en charge. Sans effet sur le prêt immobilier.", "calcZero": "Division par zéro impossible", "calcError": "Erreur"}, "ko": {"subtitle": "주거용 주택담보대출 계산기 · 무료 예상", "language": "언어", "details": "주거용 주택담보대출 정보", "price": "주택 가격 ($)", "down": "계약금 비율 (%)", "rate": "연이율 (%)", "term": "대출 기간", "tax": "연간 재산세 ($)", "insurance": "연간 주택 보험료 ($)", "hoa": "월 HOA 비용 ($)", "pmi": "월 모기지 보험료 ($)", "reset": "예시 값으로 초기화", "estimate": "주거용 주택담보대출 예상 결과", "total": "예상 월 주거비 총액", "downAmount": "계약금", "principal": "대출 원금", "pi": "월 원금 및 이자", "taxins": "월 세금 및 보험료", "other": "월 HOA 및 모기지 보험료", "interest": "대출 기간 총이자", "note": "교육 및 예상 계산 목적으로만 제공됩니다. 대출 제안, 승인 또는 재정 조언이 아닙니다. 실제 납부액은 다를 수 있습니다. 이자율은 예시이며 실시간 견적이 아닙니다. 모기지 보험료는 해당 시 직접 입력하세요. 클로징 비용, 공과금 및 유지보수비는 제외됩니다.", "footer": "© 2026 LoanPilot · 간편하고 투명한 대출 예상", "invalid": "유효한 0 이상의 숫자를 입력하세요. 계약금 비율은 0~100%여야 합니다.", "year": "년", "calcTitle": "일반 계산기", "calcHint": "덧셈, 뺄셈, 곱셈, 나눗셈 및 키보드 입력을 지원합니다. 주택담보대출 계산에는 영향을 주지 않습니다.", "calcZero": "0으로 나눌 수 없습니다", "calcError": "오류"}};
+let currentLang="en";
+function setLanguage(lang){currentLang=messages[lang]?lang:"en";document.documentElement.lang=currentLang;document.getElementById("language").value=currentLang;document.querySelectorAll("[data-i18n]").forEach(el=>{el.textContent=messages[currentLang][el.dataset.i18n]});document.querySelectorAll("#years option").forEach(el=>{el.textContent=el.value+" "+messages[currentLang].year});document.title="LoanPilot | "+messages[currentLang].subtitle;calculate();if(typeof showCalc==="function" && typeof calc!=="undefined")showCalc();}
 const ids=['price','down','rate','years','tax','insurance','hoa','pmi'];
 const defaults={price:450000,down:20,rate:6.5,years:30,tax:5400,insurance:1500,hoa:0,pmi:0};
 const usd=n=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:2}).format(n);
@@ -50,7 +70,7 @@ function calculate(){
  const v={};
  for(const id of ids){const raw=document.getElementById(id).value;v[id]=raw.trim()===''?NaN:Number(raw)}
  const valid=ids.every(id=>Number.isFinite(v[id])&&v[id]>=0)&&v.down<=100&&v.years>0;
- if(!valid){put('error','Enter valid non-negative numbers; down payment must be 0–100%.');for(const id of ['total','downAmount','principal','pi','taxins','other','interest'])put(id,'—');return}
+ if(!valid){put('error',messages[currentLang].invalid);for(const id of ['total','downAmount','principal','pi','taxins','other','interest'])put(id,'—');return}
  put('error','');
  const downAmount=v.price*v.down/100;
  const principal=v.price-downAmount;
@@ -62,8 +82,59 @@ function calculate(){
  put('total',usd(pi+taxins+other));put('downAmount',usd(downAmount));put('principal',usd(principal));put('pi',usd(pi));put('taxins',usd(taxins));put('other',usd(other));put('interest',usd(Math.max(0,pi*months-principal)));
 }
 ids.forEach(id=>document.getElementById(id).addEventListener('input',calculate));
+document.getElementById('language').addEventListener('change',e=>setLanguage(e.target.value));
 document.getElementById('reset').addEventListener('click',()=>{ids.forEach(id=>document.getElementById(id).value=defaults[id]);calculate()});
-calculate();
+setLanguage("en");
+
+// Separate four-function calculator; never evaluates user input as code.
+const calc={display:'0',stored:null,operator:null,waiting:false,history:'',errorKey:null};
+const calcDisplay=document.getElementById('calc-display');
+const calcHistory=document.getElementById('calc-history');
+const symbol={'+':'+','-':'−','*':'×','/':'÷'};
+function showCalc(){calcDisplay.textContent=calc.errorKey?messages[currentLang][calc.errorKey]:calc.display;calcHistory.textContent=calc.history;}
+function clearCalc(){Object.assign(calc,{display:'0',stored:null,operator:null,waiting:false,history:'',errorKey:null});showCalc();}
+function pretty(n){if(!Number.isFinite(n)||Math.abs(n)>1e15)return null;return String(Number(n.toPrecision(12)));}
+function doCalc(a,b,op){if(op==='/'&&b===0)return null;return pretty(op==='+'?a+b:op==='-'?a-b:op==='*'?a*b:a/b);}
+function calcAction(action,value){
+ if(action==='clear'){clearCalc();return;}
+ if(calc.errorKey){if(action!=='digit'&&action!=='decimal')return;clearCalc();}
+ if(action==='digit'){
+  if(calc.waiting){calc.display=value;calc.waiting=false;}
+  else if(calc.display.replace(/[^0-9]/g,'').length<15){calc.display=calc.display==='0'?value:calc.display==='-0'?'-'+value:calc.display+value;}
+ }else if(action==='decimal'){
+  if(calc.waiting){calc.display='0.';calc.waiting=false;}
+  else if(!calc.display.includes('.'))calc.display+='.';
+ }else if(action==='backspace'){
+  if(calc.waiting){calc.display='0';calc.waiting=false;}
+  else calc.display=calc.display.length<=1||calc.display.length===2&&calc.display[0]==='-'?'0':calc.display.slice(0,-1);
+ }else if(action==='sign'){
+  if(calc.display!=='0')calc.display=calc.display.startsWith('-')?calc.display.slice(1):'-'+calc.display;
+ }else if(action==='percent'){
+  const result=pretty(Number(calc.display)/100);if(result!==null)calc.display=result;
+ }else if(action==='operator'){
+  if(calc.operator&&!calc.waiting){const result=doCalc(calc.stored,Number(calc.display),calc.operator);if(result===null){calc.errorKey=calc.operator==='/'&&Number(calc.display)===0?'calcZero':'calcError';showCalc();return;}calc.display=result;}
+  calc.stored=Number(calc.display);calc.operator=value;calc.waiting=true;calc.history=calc.display+' '+symbol[value];
+ }else if(action==='equals'){
+  if(calc.operator!==null&&calc.stored!==null){const b=Number(calc.display);const result=doCalc(calc.stored,b,calc.operator);calc.history=String(calc.stored)+' '+symbol[calc.operator]+' '+calc.display+' =';calc.operator=null;calc.stored=null;calc.waiting=true;if(result===null){calc.errorKey=b===0?'calcZero':'calcError';}else calc.display=result;}
+ }
+ showCalc();
+}
+document.getElementById('calc-keys').addEventListener('click',e=>{const button=e.target.closest('button[data-action]');if(button)calcAction(button.dataset.action,button.dataset.value);});
+document.addEventListener('keydown',e=>{
+ const tag=document.activeElement?.tagName;
+ if(tag==='INPUT'||tag==='SELECT'||tag==='TEXTAREA'||document.activeElement?.isContentEditable)return;
+ const key=e.key;let action=null,value;
+ if(/^\d$/.test(key)){action='digit';value=key;}
+ else if(['+','-','*','/'].includes(key)){action='operator';value=key;}
+ else if(key==='.'||key===',')action='decimal';
+ else if(key==='Enter'||key==='=')action='equals';
+ else if(key==='Backspace')action='backspace';
+ else if(key==='Escape')action='clear';
+ else if(key==='%')action='percent';
+ if(action){e.preventDefault();calcAction(action,value);}
+});
+showCalc();
+
 </script>
 </body>
 </html>
